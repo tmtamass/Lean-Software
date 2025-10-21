@@ -1,0 +1,11 @@
+*** Begin Patch
+*** Update File: program.cs
+@@
+-public class MainForm : Form
++using System;
++using System.Drawing;
++using System.Drawing.Drawing2D;
++using System.Windows.Forms;
++
++public class MainForm : Form
+*** End Patch
