@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean WebShop</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #120e1e;
+            color: #gainsboro;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #221c38;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            color: #aa96ff;
+        }
+        .product {
+            margin-bottom: 2rem;
+        }
+        .product img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        #paypal-button-container {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lean WebShop</h1>
+        <div class="product">
+            <h3>Lean Generator - Lifetime Subscription</h3>
+            <p>Price: $100.00</p>
+        </div>
+        <div id="paypal-button-container"></div>
+    </div>
+
+    <!-- Replace YOUR_CLIENT_ID with your actual PayPal Client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script>
+        paypal.Buttons({
+            createOrder: async (data, actions) => {
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const order = await response.json();
+                return order.id;
+            },
+            onApprove: async (data, actions) => {
+                const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const orderData = await response.json();
+
+                if (orderData.status === 'COMPLETED') {
+                    alert('Transaction completed by ' + orderData.payer.name.given_name);
+                } else {
+                    alert('Transaction failed or was not completed.');
+                }
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>
