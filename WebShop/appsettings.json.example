@@ -1,0 +1,14 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "PayPal": {
+    "ClientId": "YOUR_PAYPAL_CLIENT_ID",
+    "ClientSecret": "YOUR_PAYPAL_CLIENT_SECRET",
+    "BaseUrl": "https://api-m.sandbox.paypal.com"
+  }
+}
